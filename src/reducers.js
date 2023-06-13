@@ -8,11 +8,12 @@ const rootReducer = (state, action) => {
       case 'LOGOUT_USER':
         return null;
       case 'UPDATE_RESPONSE_DATA':
-        // Update the response data in the state
         return {
           ...state,
           responseData: action.payload,
         };
+      // case 'RESET_VALUES':
+      //   return null;
       default:
         return state;
     }
