@@ -19,7 +19,6 @@ function Menu({ responseData, setResponseData, logoutUser }) {
     logoutUser();
   };
 
-  console.log(responseData)
   const [openNav, setOpenNav] = React.useState(false);
  
   React.useEffect(() => {

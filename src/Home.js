@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import { connect, useDispatch } from 'react-redux';
 import { setResponseData, updateResponseData } from './actions';
 import { persistor } from './store';
@@ -15,9 +15,24 @@ function Home({ responseData, setResponseData }) {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [openCuti, setOpenCuti] = useState(false);
+  const [tableData, setTableData] = useState([]);
 
   const handleApiResponse = (data) => {
     setResponseData(data);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  
+  const fetchData = async () => {
+    try {
+      const response = await axios.get('http://127.0.0.1:5000/kehadiran');
+      setTableData(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleOpen = () => {
@@ -27,18 +42,6 @@ function Home({ responseData, setResponseData }) {
   const handleOpenCuti = () => {
     setOpenCuti(!openCuti)
   };
-
-  const TABLE_HEAD = ["TANGGAL", "NIK", "JAM MASUK", "JAM KELUAR","KETERANGAN"];
- 
-const TABLE_ROWS = [
-  {
-    tanggal: "2023-06-01",
-    nik: "12345",
-    jammasuk: "09:00",
-    jamkeluar: "17:00",
-    keterangan: "TELAT",
-  }
-];
 
   
   
@@ -57,110 +60,43 @@ const TABLE_ROWS = [
           <EditProfil responseData={responseData} setResponseData={setResponseData} open={open} handleOpen={handleOpen} />
           <AddCuti responseData={responseData} setResponseData={setResponseData} openCuti={openCuti} handleOpenCuti={handleOpenCuti} />
         </div>
-        <div className="flex p-10 flex-start">
+        {/* <div className="flex p-10 flex-start">
           <p>INFORMASI PENGAJUAN CUTI</p>
           <Card className="w-full h-full overflow-scroll">
             <table className="w-full text-left table-auto min-w-max">
-              <thead>
-                <tr>
-                  {TABLE_HEAD.map((head) => (
-                    <th key={head} className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal leading-none opacity-70"
-                      >
-                        {head}
-                      </Typography>
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {TABLE_ROWS.map(({ tanggal, nik, jammasuk, jamkeluar, keterangan }, index) => (
-                  <tr key={nik} className="even:bg-blue-gray-50/50">
-                    <td className="p-4">
-                      <Typography variant="small" color="blue-gray" className="font-normal">
-                        {tanggal}
-                      </Typography>
-                    </td>
-                    <td className="p-4">
-                      <Typography variant="small" color="blue-gray" className="font-normal">
-                        {nik}
-                      </Typography>
-                    </td>
-                    <td className="p-4">
-                      <Typography variant="small" color="blue-gray" className="font-normal">
-                        {jammasuk}
-                      </Typography>
-                    </td>
-                    <td className="p-4">
-                      <Typography variant="small" color="blue-gray" className="font-normal">
-                        {jamkeluar}
-                      </Typography>
-                    </td>
-                    <td className="p-4">
-                      <Typography variant="small" color="blue-gray" className="font-normal">
-                        {keterangan}
-                      </Typography>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
+             
             </table>
           </Card>
-        </div>
+        </div> */}
         <div className="flex p-10 flex-start">
-          <p>TIMESHEET KEHADIRAN HARI INI</p>
+          <p>TIMESHEET KEHADIRAN BULAN INI</p>
           <Card className="w-full h-full overflow-scroll">
-            <table className="w-full text-left table-auto min-w-max">
-              <thead>
-                <tr>
-                  {TABLE_HEAD.map((head) => (
-                    <th key={head} className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal leading-none opacity-70"
-                      >
-                        {head}
-                      </Typography>
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {TABLE_ROWS.map(({ tanggal, nik, jammasuk, jamkeluar, keterangan }, index) => (
-                  <tr key={nik} className="even:bg-blue-gray-50/50">
-                    <td className="p-4">
-                      <Typography variant="small" color="blue-gray" className="font-normal">
-                        {tanggal}
-                      </Typography>
-                    </td>
-                    <td className="p-4">
-                      <Typography variant="small" color="blue-gray" className="font-normal">
-                        {nik}
-                      </Typography>
-                    </td>
-                    <td className="p-4">
-                      <Typography variant="small" color="blue-gray" className="font-normal">
-                        {jammasuk}
-                      </Typography>
-                    </td>
-                    <td className="p-4">
-                      <Typography variant="small" color="blue-gray" className="font-normal">
-                        {jamkeluar}
-                      </Typography>
-                    </td>
-                    <td className="p-4">
-                      <Typography variant="small" color="blue-gray" className="font-normal">
-                        {keterangan}
-                      </Typography>
-                    </td>
+          <table className="w-full text-left table-auto min-w-max">
+            <thead>
+              <tr>
+                <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">TANGGAL</th>
+                <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">JAM KELUAR</th>
+                <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">JAM MASUK</th>
+                <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">KETERANGAN</th>
+              </tr>
+            </thead>
+            <tbody>
+            {Array.isArray(tableData) ? (
+                tableData.map((item, index) => (
+                  <tr key={index} className="even:bg-blue-gray-50/50">
+                    <td className="p-4">{item['tanggal']}</td>
+                    <td className="p-4">{item['jamkeluar']}</td>
+                    <td className="p-4">{item['jammasuk']}</td>
+                    <td className="p-4">{item['keterangan']}</td>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={4}>No data available</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
           </Card>
         </div>
       </>      
