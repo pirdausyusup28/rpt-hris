@@ -13,7 +13,7 @@ function InformasiData({ responseData, setResponseData })
         <>
             <Card className="w-96">
             <CardHeader floated={false} className="flex items-center justify-center h-80">
-                <img src="./foto.jpg" alt="profile-picture" className="h-80" />
+                <img src="./foto.jpg" alt="tes" className="h-80" />
             </CardHeader>
             <CardBody className="text-center">
                 <Typography variant="h4" color="blue-gray" className="mb-2">{responseData?.nama_lengkap}</Typography>
