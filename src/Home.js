@@ -1,25 +1,17 @@
 import { React, useState, useEffect } from "react";
-import { connect, useDispatch } from 'react-redux';
-import { setResponseData, updateResponseData } from './actions';
-import { persistor } from './store';
+import { connect } from 'react-redux';
+import { setResponseData } from './actions';
 import axios from 'axios';
-import Swal from 'sweetalert';
-import { Card, CardHeader, CardBody, Typography, Button, Dialog, CardFooter, Input} from "@material-tailwind/react";
+import { Card, Button} from "@material-tailwind/react";
 import InformasiData from './components/InformasiData';
 import EditProfil from './components/EditProfil';
 import AddCuti from "./components/AddCuti";
 
 function Home({ responseData, setResponseData }) {
 
-  const [updatedData, setUpdatedData] = useState(responseData);
-  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [openCuti, setOpenCuti] = useState(false);
   const [tableData, setTableData] = useState([]);
-
-  const handleApiResponse = (data) => {
-    setResponseData(data);
-  };
 
   useEffect(() => {
     fetchData();
@@ -28,7 +20,7 @@ function Home({ responseData, setResponseData }) {
   
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:5000/kehadiran');
+      const response = await axios.get(`http://127.0.0.1:5000/kehadiran/${responseData.nik}`);
       setTableData(response.data);
     } catch (error) {
       console.error(error);
@@ -60,14 +52,37 @@ function Home({ responseData, setResponseData }) {
           <EditProfil responseData={responseData} setResponseData={setResponseData} open={open} handleOpen={handleOpen} />
           <AddCuti responseData={responseData} setResponseData={setResponseData} openCuti={openCuti} handleOpenCuti={handleOpenCuti} />
         </div>
-        {/* <div className="flex p-10 flex-start">
+        <div className="flex p-10 flex-start">
           <p>INFORMASI PENGAJUAN CUTI</p>
           <Card className="w-full h-full overflow-scroll">
-            <table className="w-full text-left table-auto min-w-max">
-             
-            </table>
+          <table className="w-full text-left table-auto min-w-max">
+            <thead>
+              <tr>
+                <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">TANGGAL</th>
+                <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">JAM KELUAR</th>
+                <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">JAM MASUK</th>
+                <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">KETERANGAN</th>
+              </tr>
+            </thead>
+            <tbody>
+            {Array.isArray(tableData) ? (
+                tableData.map((item, index) => (
+                  <tr key={index} className="even:bg-blue-gray-50/50">
+                    <td className="p-4">{item['tanggal']}</td>
+                    <td className="p-4">{item['jamkeluar']}</td>
+                    <td className="p-4">{item['jammasuk']}</td>
+                    <td className="p-4">{item['keterangan']}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={4}>No data available</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
           </Card>
-        </div> */}
+        </div>
         <div className="flex p-10 flex-start">
           <p>TIMESHEET KEHADIRAN BULAN INI</p>
           <Card className="w-full h-full overflow-scroll">
