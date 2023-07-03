@@ -34,7 +34,13 @@ function Login({ setResponseData }) {
                 showConfirmButton: false,
                 timer: 1500
               })
-              navigate('/home');
+              if(response.data.data.jabatan == 1){
+                navigate('/homeadmin');
+              }else{
+                navigate('/home');
+              }
+              console.log('data')
+              console.log(data)
           } else {
             Swal('Login Gagal', 'Silahkan Hubungi HRD', 'error');
           }

@@ -12,9 +12,11 @@ function Home({ responseData, setResponseData }) {
   const [open, setOpen] = useState(false);
   const [openCuti, setOpenCuti] = useState(false);
   const [tableData, setTableData] = useState([]);
+  const [tableCuti, setTableCuti] = useState([]);
 
   useEffect(() => {
     fetchData();
+    fetchDataCuti();
   }, []);
 
   
@@ -23,6 +25,15 @@ function Home({ responseData, setResponseData }) {
       const response = await axios.get(`http://127.0.0.1:5000/kehadiran/${responseData.nik}`);
       setTableData(response.data);
     } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const fetchDataCuti = async () => {
+    try{
+      const response = await axios.get(`http://127.0.0.1:5000/cuti/${responseData.nik}`);
+      setTableCuti(response.data);
+    } catch(error) {
       console.error(error);
     }
   };
@@ -41,37 +52,44 @@ function Home({ responseData, setResponseData }) {
       <>
         <div className="flex p-10 flex-start">
           <InformasiData></InformasiData>
-          
-          <Card className="p-3 w-96">
-            <Button style={{ marginBottom: '10px' }} color="blue" onClick={handleOpen} >Edit Profil</Button>
-            {/* <Button style={{ marginBottom: '10px' }} color="amber">Lihat Absensi</Button> */}
-            <Button style={{ marginBottom: '10px' }} color="red" onClick={handleOpenCuti} >Pengajuan Cuti</Button>
-            <Button style={{ marginBottom: '10px' }} color="green">Pengajuan Lembur</Button>
-          </Card>
-
+        </div>
+        <div className="flex p-10 flex-start">
+        <Card className="w-full p-3">
+          <div className="flex justify-center">
+            <Button style={{ marginBottom: '10px' }} color="blue" onClick={handleOpen}>
+              Edit Profil
+            </Button>
+            <Button style={{ marginBottom: '10px' }} color="red" onClick={handleOpenCuti}>
+              Pengajuan Cuti
+            </Button>
+            <Button style={{ marginBottom: '10px' }} color="green">
+              Pengajuan Lembur
+            </Button>
+          </div>
+        </Card>
           <EditProfil responseData={responseData} setResponseData={setResponseData} open={open} handleOpen={handleOpen} />
           <AddCuti responseData={responseData} setResponseData={setResponseData} openCuti={openCuti} handleOpenCuti={handleOpenCuti} />
         </div>
         <div className="flex p-10 flex-start">
           <p>INFORMASI PENGAJUAN CUTI</p>
           <Card className="w-full h-full overflow-scroll">
-          <table className="w-full text-left table-auto min-w-max">
+          <table className="w-full text-left table-auto min-w-max table-responsive">
             <thead>
               <tr>
-                <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">TANGGAL</th>
-                <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">JAM KELUAR</th>
-                <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">JAM MASUK</th>
-                <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">KETERANGAN</th>
+                <th className="px-4 py-2 bg-blue-gray-100">TANGGAL AWAL</th>
+                <th className="px-4 py-2 bg-blue-gray-100">TANGGAL AKHIR</th>
+                <th className="px-4 py-2 bg-blue-gray-100">KETERANGAN</th>
+                <th className="px-4 py-2 bg-blue-gray-100">STATUS</th>
               </tr>
             </thead>
             <tbody>
-            {Array.isArray(tableData) ? (
-                tableData.map((item, index) => (
-                  <tr key={index} className="even:bg-blue-gray-50/50">
-                    <td className="p-4">{item['tanggal']}</td>
-                    <td className="p-4">{item['jamkeluar']}</td>
-                    <td className="p-4">{item['jammasuk']}</td>
-                    <td className="p-4">{item['keterangan']}</td>
+              {Array.isArray(tableCuti) ? (
+                tableCuti.map((item, index) => (
+                  <tr key={index} className={(index % 2 === 0) ? 'bg-blue-gray-50' : 'bg-transparent'}>
+                    <td className="px-4 py-2">{item['tglawal']}</td>
+                    <td className="px-4 py-2">{item['tglakhir']}</td>
+                    <td className="px-4 py-2">{item['keterangan']}</td>
+                    <td className="px-4 py-2">{item['status']}</td>
                   </tr>
                 ))
               ) : (
@@ -86,23 +104,23 @@ function Home({ responseData, setResponseData }) {
         <div className="flex p-10 flex-start">
           <p>TIMESHEET KEHADIRAN BULAN INI</p>
           <Card className="w-full h-full overflow-scroll">
-          <table className="w-full text-left table-auto min-w-max">
+          <table className="w-full text-left table-auto min-w-max table-responsive">
             <thead>
               <tr>
-                <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">TANGGAL</th>
-                <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">JAM KELUAR</th>
-                <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">JAM MASUK</th>
-                <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">KETERANGAN</th>
+                <th className="px-4 py-2 bg-blue-gray-100">TANGGAL</th>
+                <th className="px-4 py-2 bg-blue-gray-100">JAM KELUAR</th>
+                <th className="px-4 py-2 bg-blue-gray-100">JAM MASUK</th>
+                <th className="px-4 py-2 bg-blue-gray-100">KETERANGAN</th>
               </tr>
             </thead>
             <tbody>
             {Array.isArray(tableData) ? (
                 tableData.map((item, index) => (
-                  <tr key={index} className="even:bg-blue-gray-50/50">
-                    <td className="p-4">{item['tanggal']}</td>
-                    <td className="p-4">{item['jamkeluar']}</td>
-                    <td className="p-4">{item['jammasuk']}</td>
-                    <td className="p-4">{item['keterangan']}</td>
+                  <tr key={index} className={(index % 2 === 0) ? 'bg-blue-gray-50' : 'bg-transparent'}>
+                    <td className="px-4 py-2">{item['tanggal']}</td>
+                    <td className="px-4 py-2">{item['jamkeluar']}</td>
+                    <td className="px-4 py-2">{item['jammasuk']}</td>
+                    <td className="px-4 py-2">{item['keterangan']}</td>
                   </tr>
                 ))
               ) : (

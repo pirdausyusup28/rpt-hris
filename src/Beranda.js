@@ -1,21 +1,46 @@
 import React, { Component } from 'react'
+import { Carousel, Typography, Button } from "@material-tailwind/react";
 
 export default class Beranda extends Component {
   render() {
     return (
       <div className="container w-full max-w-full">
-        <section className="bg-white dark:bg-gray-900">
-            <div className="max-w-screen-xl px-4 py-8 mx-auto text-center lg:py-16">
-                <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">PT. Alfatih Humaira Tbk.</h1>
-                <p className="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 lg:px-48 dark:text-gray-400">Human Resources Information System</p>
-                <div className="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
-                    <a href="#" className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">
-                        Masuk
-                        <svg aria-hidden="true" className="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
-                    </a>
+        <Carousel className="rounded-xl">
+          <div className="relative w-full h-full">
+            {/* <img src="https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2560&q=80" alt="image 1" classname="object-cover w-full h-full" /> */}
+
+            <div className="absolute inset-0 grid w-full h-full place-items-center bg-black/75">
+              <div className="w-3/4 text-center md:w-2/4">
+                <Typography variant="h1" color="white" className="mb-4 text-3xl md:text-4xl lg:text-5xl"> The Beauty of Nature</Typography>
+                <Typography variant="lead" color="white" className="mb-12 opacity-80"> It is not so much for its beauty that the forest makes a claim upon men&apos;s hearts, as for that subtle something, that quality of air that emanation from old trees, that so wonderfully changes and renews a weary spirit.</Typography>
+                <div className="flex justify-center gap-2"> <Button size="lg" color="white">   Explore </Button> <Button size="lg" color="white" variant="text">   Gallery </Button>
                 </div>
+              </div>
             </div>
-        </section>
+          </div>
+          <div className="relative w-full h-full">
+            {/* <img src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2940&q=80" alt="image 2" className="object-cover w-full h-full"/> */}
+            <div className="absolute inset-0 grid items-center w-full h-full bg-black/75">
+              <div className="w-3/4 pl-12 md:w-2/4 md:pl-20 lg:pl-32">
+                <Typography variant="h1" color="white" className="mb-4 text-3xl md:text-4xl lg:text-5xl"> The Beauty of Nature</Typography>
+                <Typography variant="lead" color="white" className="mb-12 opacity-80"> It is not so much for its beauty that the forest makes a claim upon men&apos;s hearts, as for that subtle something, that quality of air that emanation from old trees, that so wonderfully changes and renews a weary spirit.</Typography>
+                <div className="flex gap-2"> <Button size="lg" color="white">   Explore </Button> <Button size="lg" color="white" variant="text">   Gallery </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="relative w-full h-full">
+            {/* <img src="https://images.unsplash.com/photo-1518623489648-a173ef7824f3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2762&q=80" alt="image 3" className="object-cover w-full h-full"/> */}
+            <div className="absolute inset-0 grid items-end w-full h-full bg-black/75">
+              <div className="w-3/4 pb-12 pl-12 md:w-2/4 md:pl-20 md:pb-20 lg:pl-32 lg:pb-32">
+                <Typography variant="h1" color="white" className="mb-4 text-3xl md:text-4xl lg:text-5xl"> The Beauty of Nature</Typography>
+                <Typography variant="lead" color="white" className="mb-12 opacity-80"> It is not so much for its beauty that the forest makes a claim upon men&apos;s hearts, as for that subtle something, that quality of air that emanation from old trees, that so wonderfully changes and renews a weary spirit.</Typography>
+                <div className="flex gap-2"> <Button size="lg" color="white">   Explore </Button> <Button size="lg" color="white" variant="text">   Gallery </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Carousel>
       </div>
     )
   }
