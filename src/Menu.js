@@ -8,7 +8,32 @@ import About from './About.js'
 import Login from './Login.js'
 import Beranda from './Beranda.js'
 import MenuKaryawan from './admin/MenuKaryawan.js'
-import { Navbar, Typography, Button,} from "@material-tailwind/react";
+import { Navbar, Typography, Button, Card,
+  List,
+  ListItem,
+  ListItemPrefix,
+  ListItemSuffix,
+  Chip,
+  Accordion,
+  AccordionHeader,
+  AccordionBody,
+  Alert,
+  Input,} from "@material-tailwind/react";
+import {
+  PresentationChartBarIcon,
+  ShoppingBagIcon,
+  UserCircleIcon,
+  Cog6ToothIcon,
+  InboxIcon,
+  PowerIcon,
+} from "@heroicons/react/24/solid";
+
+import {
+  ChevronRightIcon,
+  ChevronDownIcon,
+  CubeTransparentIcon,
+  MagnifyingGlassIcon,
+} from "@heroicons/react/24/outline";
  
 function Menu({ responseData, setResponseData, logoutUser }) {
   const handleApiResponse = (data) => {
@@ -16,10 +41,12 @@ function Menu({ responseData, setResponseData, logoutUser }) {
   };
 
   const [open, setOpen] = useState(false);
+  const [openAlert, setOpenAlert] = React.useState(true);
+ 
   const [navbar, setNavbar] = useState(false);
  
-  const handleOpen = (value) => {
-    setOpen(open === value ? 0 : value);
+  const handleOpen = (index) => {
+    setOpen(index);
   };
 
   const handleLogout = () => {
@@ -40,55 +67,73 @@ function Menu({ responseData, setResponseData, logoutUser }) {
     <>
     <BrowserRouter>
     {responseData !== null && responseData !== undefined && responseData.jabatan == 1 ? ( 
-    <div className="flex">
-    <div className={` ${ open ? "w-40" : "w-80 " } flex flex-col h-screen p-3 shadow duration-300`} style={{ backgroundColor:'#6c39a0'}}>
-        <div className="space-y-3">
-            <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold text-white">
-                    Dashboard
-                </h2>
-                <button onClick={() => setOpen(!open)}>
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-6 h-6 text-white"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M4 6h16M4 12h8m-8 6h16"
-                        />
-                    </svg>
-                </button>
-            </div>
-            <div className="relative">
-                <span className="absolute inset-y-0 left-0 flex items-center py-4">
-                    <button type="submit" className="p-2 focus:outline-none focus:ring">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                    </button>
-                </span>
-                <input type="search" name="Search" placeholder="Search..." className="w-full py-2 pl-10 text-sm rounded-md focus:outline-none"/>
-            </div>
-            <div className="flex-1">
-                <ul className="pt-2 pb-4 space-y-1 text-sm">
-                    <li className="rounded-sm"><Link to="/datakaryawan" className="flex items-center p-2 space-x-3 rounded-md" style={{ fontFamily: 'cursive', fontSize: 'initial', fontWeight: 'bold' }}>Data Karyawan</Link></li>
-                    <li className="rounded-sm"><Link to="/datacuti" className="flex items-center p-2 space-x-3 rounded-md" style={{ fontFamily: 'cursive', fontSize: 'initial', fontWeight: 'bold' }}>Data Cuti</Link></li>
-                    <li className="rounded-sm"><Link to="/datakehadiran" className="flex items-center p-2 space-x-3 rounded-md" style={{ fontFamily: 'cursive', fontSize: 'initial', fontWeight: 'bold' }}>Data Kehadiran</Link></li>
-                </ul>
-            </div>
+    <div className="flex h-screen">
+    <div className="bg-gray-200 w-90">
+      <Card className="h-full p-4 shadow-xl">
+        <div className="flex items-center gap-4 p-4 mb-2">
+          <img src="/img/logo-ct-dark.png" alt="brand" className="w-8 h-8" />
+          <Typography variant="h5" color="blue-gray">
+            Sidebar
+          </Typography>
         </div>
+        <div className="p-2">
+          <Input icon={<MagnifyingGlassIcon className="w-5 h-5" />} label="Search" />
+        </div>
+        <List>
+          <Accordion
+            open={open === 1}
+            icon={
+              <ChevronDownIcon
+                strokeWidth={2.5}
+                className={`mx-auto h-4 w-4 transition-transform ${open === 1 ? "rotate-180" : ""}`}
+              />
+            }
+          >
+            <ListItem className="p-0" selected={open === 1}>
+              <AccordionHeader onClick={() => handleOpen(1)} className="p-3 border-b-0">
+                <ListItemPrefix>
+                  <PresentationChartBarIcon className="w-5 h-5" />
+                </ListItemPrefix>
+                <Typography color="blue-gray" className="mr-auto font-normal">
+                  Dashboard
+                </Typography>
+              </AccordionHeader>
+            </ListItem>
+            <AccordionBody className="py-1">
+              <List className="p-0">
+                <ListItem>
+                  <ListItemPrefix>
+                    <ChevronRightIcon strokeWidth={3} className="w-5 h-3" />
+                  </ListItemPrefix>
+                  <Link to="/datakaryawan" className="flex items-center" style={{ fontFamily: 'cursive', fontSize: 'initial', fontWeight: 'bold' }}>Karyawan</Link>
+                </ListItem>
+                <ListItem>
+                  <ListItemPrefix>
+                    <ChevronRightIcon strokeWidth={3} className="w-5 h-3" />
+                  </ListItemPrefix>
+                  <Link to="/datakehadiran" className="flex items-center" style={{ fontFamily: 'cursive', fontSize: 'initial', fontWeight: 'bold' }}>Kehadiran</Link>
+                </ListItem>
+              </List>
+            </AccordionBody>
+          </Accordion>
+          <hr className="my-2 border-blue-gray-50" />
+        </List>
+      </Card>
     </div>
-    <div className="container mx-10 mt-12">
-        <div className="grid grid-cols-1 gap-6 mb-6 lg:grid-cols-3">
+  
+    <div className="flex flex-col flex-1">
+      <header className="p-4 text-white bg-blue-500">
+        <h1>header</h1>
+      </header>
+  
+      <main className="flex-1 p-4">
+        <h1>content</h1>
         <Routes>
           <Route path="/datakaryawan" element={<MenuKaryawan />} />
         </Routes>
-        </div>
+      </main>
     </div>
-</div>
+    </div>
      ) : ( 
       <nav className="w-full bg-white shadow">
             <div className="justify-between px-4 mx-auto md:items-center md:flex md:px-8">
